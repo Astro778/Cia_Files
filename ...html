@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>!! ERRORE FATALE 404 - ACCESSO NEGATO !!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Share Tech Mono', monospace;
+  overflow: hidden;
+  color: #00ff99; /* verde acido */
+  background-color: #0a0f1a; /* blu notte molto scuro */
+
+  /* Layer 1: pattern reticolare con linee sottili */
+  background-image:
+    linear-gradient(rgba(0, 255, 153, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 153, 0.1) 1px, transparent 1px),
+    radial-gradient(ellipse at center, #0a0f1a 0%, #000000 80%);
+  background-size: 40px 40px, 40px 40px, auto;
+  background-position: 0 0, 0 0, center;
+  background-repeat: repeat, repeat, no-repeat;
+}
+
+/* Aggiungo un leggero effetto scanline orizzontale */
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 153, 0.05),
+    rgba(0, 255, 153, 0.05) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  z-index: 9999;
+}
+
+
+  .container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+  }
+  .glitch {
+    color: #0f0;
+    font-size: 3em;
+    text-transform: uppercase;
+    position: relative;
+    animation: glitch 2s infinite;
+    user-select: none;
+  }
+  @keyframes glitch {
+    0% {
+      text-shadow: 2px 0 red;
+    }
+    20% {
+      text-shadow: -2px 0 blue;
+    }
+    40% {
+      text-shadow: 2px 2px red;
+    }
+    60% {
+      text-shadow: -2px -2px blue;
+    }
+    80% {
+      text-shadow: 2px 0 red;
+    }
+    100% {
+      text-shadow: none;
+    }
+  }
+  #matrix {
+    font-size: 1.1em;
+    height: 320px;
+    background: black;
+    border: 2px solid #0f0;
+    padding: 15px;
+    margin: 20px 0;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+  }
+  .btn {
+    background: transparent;
+    border: 2px solid #0f0;
+    color: #0f0;
+    padding: 12px 30px;
+    font-size: 1.3em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+  .btn:hover {
+    background: #0f0;
+    color: black;
+  }
+  .center {
+    text-align: center;
+  }
+  .hidden { display: none; }
+  .final-text {
+    font-size: 2em;
+    color: red;
+    user-select: none;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="intro" class="center">
+    <h1 class="glitch">ERRORE FATALE 404</h1>
+    <p>Accesso a dati altamente riservati rilevato.</p>
+    <p>Solo utenti autorizzati possono procedere oltre.</p>
+    <p>Sei sicuro di voler forzare l’accesso? Il rischio è reale.</p>
+    <button class="btn" onclick="startLoading()">FORZA ACCESSO</button>
+  </div>
+
+  <div id="loading" class="hidden">
+    <h2 class="glitch center">AUTENTICAZIONE IN CORSO...</h2>
+    <div id="matrix"></div>
+  </div>
+
+  <div id="warning" class="hidden center">
+    <h2 style="color:#f00;">⚠️ ATTENZIONE: ACCESSO NON AUTORIZZATO ⚠️</h2>
+    <p>IP rilevato: <span id="user-ip">caricamento...</span></p>
+    <p>Sei stato inserito nel database di sorveglianza globale.</p>
+    <p><strong>Non puoi tornare indietro.</strong></p>
+    <button class="btn" onclick="proceed()">PROSEGUI A TUA RESPONSABILITÀ</button>
+  </div>
+
+  <div id="final" class="hidden center">
+    <h1 class="glitch" style="color:#f00;">A NOI NON PIACE LA GENTE CHE RISCHIA.</h1>
+  </div>
+</div>
+
+<audio id="spooky-audio" loop>
+  <source src="audio\horror.mp3" type="audio/mp3" />
+</audio>
+
+<script>
+  // Blocca il tasto indietro e ricarica pagina
+  history.pushState(null, null, location.href);
+  window.onpopstate = function () {
+    history.go(1);
+  };
+
+  const matrix = document.getElementById('matrix');
+  const intro = document.getElementById('intro');
+  const loading = document.getElementById('loading');
+  const warning = document.getElementById('warning');
+  const final = document.getElementById('final');
+  const userIPSpan = document.getElementById('user-ip');
+  const spookyAudio = document.getElementById('spooky-audio');
+
+  let userIP = "Caricamento IP...";
+  async function getIP() {
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      userIP = data.ip;
+      userIPSpan.textContent = userIP;
+    } catch {
+      userIPSpan.textContent = "IP non disponibile";
+    }
+  }
+  getIP();
+
+  // Messaggi fake di caricamento
+  const loadingSteps = [
+    "Inizializzazione sistemi... 0%",
+    "Controllo firewall... 17%",
+    "Analisi traffico rete... 29%",
+    "Decrittazione pacchetti... 43%",
+    "Controllo backdoor... 59%",
+    "Attivazione protocolli d'emergenza... 70%",
+    "Connessione satellitare attiva... 81%",
+    "Cross-check database globale... 94%",
+    "Registrazione IP utente in corso...",
+  ];
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function startLoading() {
+    spookyAudio.play();
+    intro.classList.add('hidden');
+    loading.classList.remove('hidden');
+    matrix.textContent = "";
+
+    for (let i=0; i<loadingSteps.length; i++) {
+      matrix.textContent += loadingSteps[i] + "\n";
+      await sleep(1400);
+    }
+
+    matrix.textContent += `IP Utente: ${userIP}\nACCESSO RILEVATO E REGISTRATO\n\n`;
+    await sleep(1800);
+
+    loading.classList.add('hidden');
+    warning.classList.remove('hidden');
+  }
+
+  function proceed() {
+    const link = document.createElement('a');
+    link.href = 'dist/virus.exe';  // percorso del file exe da scaricare
+    link.download = 'virus.exe';    // nome con cui verrà salvato
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    warning.classList.add('hidden');
+    final.classList.remove('hidden');
+    spookyAudio.pause();
+  }
+</script>
+
+</body>
+</html>
